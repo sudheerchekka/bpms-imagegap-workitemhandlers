@@ -31,11 +31,19 @@ public class TestWeatherAssignments {
 		System.out.println("Weather task re-assignment test starting ");		
 
 		Map<String, Object> results = assignmentService.assignWorkItem("ApproverC", groupAssignment);
-		System.out.println("Weather task assignment [ " + results + " ]");
+		String targetUserid = (String) results.get("AssignedActorId");
+		System.out.println("Weather task Assigned Actor Id [ " + targetUserid + " ]");
+		System.out.println("Weather task reassignment [ " + results + " ]");
+		
 		results = assignmentService.assignWorkItem("ApproverB", groupAssignment);
-		System.out.println("Weather task assignment [ " + results + " ]");
+		targetUserid = (String) results.get("AssignedActorId");
+		System.out.println("Weather task Assigned Actor Id [ " + targetUserid + " ]");
+		System.out.println("Weather task reassignment [ " + results + " ]");
+
 		results = assignmentService.assignWorkItem("ApproverA", groupAssignment);
-		System.out.println("Weather task assignment [ " + results + " ]");
+		targetUserid = (String) results.get("AssignedActorId");
+		System.out.println("Weather task Assigned Actor Id [ " + targetUserid + " ]");
+		System.out.println("Weather task reassignment [ " + results + " ]");
 		
 		assertEquals("Test123", "Test123");
 	}

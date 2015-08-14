@@ -13,7 +13,7 @@ public class WeatherAssignmentWorkItemHandler implements org.kie.api.runtime.pro
 	
 	
 	public void executeWorkItem(WorkItem workItem, WorkItemManager manager) {
-		
+	try {
 		String taskAssignment = (String) workItem.getParameter("ActorId");
 		String groupAssignment = (String) workItem.getParameter("GroupId");
 
@@ -22,7 +22,11 @@ public class WeatherAssignmentWorkItemHandler implements org.kie.api.runtime.pro
 		Map<String, Object> results = assignmentService.assignWorkItem(taskAssignment, groupAssignment);
 		
 		manager.completeWorkItem(workItem.getId(), results);		
-		
+		} catch (Exception e) {
+			System.out.println("Weather eassignment aborted for WorkItemID " + workItem.getId());
+			manager.abortWorkItem(workItem.getId());
+			e.printStackTrace();
+		}
 	}
 
 	public void abortWorkItem(WorkItem workItem, WorkItemManager manager) {
