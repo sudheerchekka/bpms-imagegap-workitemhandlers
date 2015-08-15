@@ -2,6 +2,7 @@ package com.redhat.poc.approvals;
 
 import java.util.Map;
 
+import org.drools.core.process.instance.impl.WorkItemImpl;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.manager.RuntimeEngine;
 import org.kie.api.runtime.manager.RuntimeManager;
@@ -10,6 +11,7 @@ import org.kie.api.runtime.process.WorkItemHandler;
 import org.kie.api.runtime.process.WorkItemManager;
 import org.kie.api.task.TaskService;
 import org.kie.api.task.model.Task;
+import org.kie.internal.runtime.manager.RuntimeManagerRegistry;
 import org.kie.internal.runtime.manager.context.ProcessInstanceIdContext;
 
 import com.redhat.poc.approvals.services.*;
@@ -20,19 +22,32 @@ public class WeatherReAssignmentWorkItemHandler implements WorkItemHandler {
 	
 	private KieSession ksession;
 	
-/*	
+	
+    public WeatherReAssignmentWorkItemHandler() {
+		
+		
+	}
 	public WeatherReAssignmentWorkItemHandler(KieSession ksession) {
-		super();
+		
 		this.ksession = ksession;
 	}
-*/
+
 	public void executeWorkItem(WorkItem workItem, WorkItemManager manager) {
 		
 		String taskid = (String) workItem.getParameter("taskId");
 		long taskId = Long.getLong(taskid).longValue();
+		
+		 String deploymentId  = ((WorkItemImpl)workItem).getDeploymentId()  ;
+		
+		deploymentId = deploymentId == null ? "" : deploymentId;
+       
+        final long processInstanceId = workItem.getProcessInstanceId();
 	try {
-		RuntimeManager runtimeManager = (RuntimeManager) ksession.getEnvironment().get("RuntimeManager");		
-		RuntimeEngine engine= runtimeManager.getRuntimeEngine(ProcessInstanceIdContext.get());
+		
+		
+		RuntimeManager runtimeManager = RuntimeManagerRegistry.get().getManager(deploymentId);
+		RuntimeEngine engine = runtimeManager.getRuntimeEngine(ProcessInstanceIdContext.get(processInstanceId));
+		
 		TaskService taskService = engine.getTaskService();
 		Task task = taskService.getTaskById(taskId);
 		String userid = task.getTaskData().getActualOwner().getId();

@@ -32,6 +32,12 @@
 			<artifactId>kie-internal</artifactId>
 			<version>6.2.0.Final-redhat-4</version>
 		</dependency>
+		<dependency>
+			<scope>provided</scope>
+			<groupId>org.drools</groupId>
+			<artifactId>drools-core</artifactId>
+			<version>6.2.0.Final-redhat-4</version>
+		</dependency>
 
 	</dependencies>
 	
