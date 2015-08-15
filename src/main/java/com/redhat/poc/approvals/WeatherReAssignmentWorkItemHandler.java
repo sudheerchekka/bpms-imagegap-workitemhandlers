@@ -20,15 +20,15 @@ public class WeatherReAssignmentWorkItemHandler implements WorkItemHandler {
 	
 	private KieSession ksession;
 	
-	
+/*	
 	public WeatherReAssignmentWorkItemHandler(KieSession ksession) {
 		super();
 		this.ksession = ksession;
 	}
-
+*/
 	public void executeWorkItem(WorkItem workItem, WorkItemManager manager) {
 		
-		String taskid = (String) workItem.getParameter("tskId");
+		String taskid = (String) workItem.getParameter("taskId");
 		long taskId = Long.getLong(taskid).longValue();
 	try {
 		RuntimeManager runtimeManager = (RuntimeManager) ksession.getEnvironment().get("RuntimeManager");		
@@ -50,7 +50,7 @@ public class WeatherReAssignmentWorkItemHandler implements WorkItemHandler {
 			taskService.release(taskId, userid);
 		}
 		
-		manager.completeWorkItem(workItem.getId(), null);		
+		manager.completeWorkItem(workItem.getId(), results);		
 	} catch (Exception e) {
 		System.out.println("Weather reassignment aborted for WorkItemID " + workItem.getId());
 		manager.abortWorkItem(workItem.getId());
