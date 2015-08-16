@@ -120,6 +120,9 @@ public class WeatherReAssignmentWorkItemHandler implements WorkItemHandler {
 			}else{
 				actualowner = user.getId();
 			}
+			if(actualowner!=null){
+				userid = actualowner;
+			}
 			Status stat = tdata.getStatus();
 			if (stat == Status.InProgress){
 				status = 1;
