@@ -57,7 +57,7 @@ public class WeatherAssignmentService {
 					  taskPerc = ((userAssignmentList.get(i).assignedTaskCnt + 1) * 100) / totalTasks;
 					  System.out.println("*** Calc Perc for for user " + userAssignmentList.get(i).userName + " [ Perc " + userAssignmentList.get(i).assignedPerc + " Calc Perc " + taskPerc + " Total Tasks " + totalTasks + "] ");
 					
-					  if (taskPerc <= userAssignmentList.get(i).assignedPerc) {
+					  if (taskPerc <= userAssignmentList.get(i).assignedPerc || userAssignmentList.get(i).assignedTaskCnt == 0) {
 						  System.out.println("*** Update Weather User assignment for user " + userAssignmentList.get(i).userName);
 
 						  userAssignmentList.get(i).assignedTaskCnt =  userAssignmentList.get(i).assignedTaskCnt + 1;
@@ -72,45 +72,11 @@ public class WeatherAssignmentService {
 				} else {
 					if (taskAssignment == userAssignmentList.get(i).userName) {
 						userAssignmentList.get(i).assignedTaskCnt = userAssignmentList.get(i).assignedTaskCnt - 1;
-						totalTasks--;
+						totalTasks = totalTasks - 1;
 						System.out.println("*** Removed Weather User assignment for user " + userAssignmentList.get(i).userName + " [ Perc " + userAssignmentList.get(i).assignedPerc + " Tasks " + userAssignmentList.get(i).assignedTaskCnt + " Total Tasks " + totalTasks + "] ");
 					}
 				}	
-			}
-			
-//			Iterator<UserAssignment> UserAssignmenIterator = userAssignmentList.iterator();
-
-			
-			/** Comment out logic, validate iterator
-			while (UserAssignmenIterator.hasNext() && taskUser == null) {
-				
-				System.out.println("*** Starting Business Logic");
-				System.out.println("*** Current Weather Users to Assign by available Perc - Task Assignment " + taskAssignment + "Starting User " + UserAssignmenIterator.next().userName + " [ Perc " +UserAssignmenIterator.next().assignedPerc + " Tasks " + UserAssignmenIterator.next().assignedTaskCnt + "Total Tasks " + totalTasks + "] ");
-				
-				if (taskAssignment == null ) {
-				// Business Logic to assign based on percentages
-					taskPerc = (UserAssignmenIterator.next().assignedTaskCnt / totalTasks) * 100;
-					System.out.println("*** Calc Perc for for user " + UserAssignmenIterator.next().userName + " [ Perc " +UserAssignmenIterator.next().assignedPerc + " Calc Perc " + taskPerc + " Total Tasks " + totalTasks + "] ");
-					
-					if (taskPerc <= UserAssignmenIterator.next().assignedPerc) {
-						System.out.println("*** Update Weather User assignment for user " + UserAssignmenIterator.next().userName);
-
-						UserAssignmenIterator.next().assignedTaskCnt =  UserAssignmenIterator.next().assignedTaskCnt + 1;
-						taskUser = UserAssignmenIterator.next().userName;
-						taskRole = groupAssignment;
-
-						System.out.println("*** Updated Weather User assignment for user " + taskUser + " [ Perc " +UserAssignmenIterator.next().assignedPerc + " Tasks " + UserAssignmenIterator.next().assignedTaskCnt + "Total Tasks " + totalTasks + "] ");
-				} else {
-					if (taskAssignment == UserAssignmenIterator.next().userName) {
-						UserAssignmenIterator.next().assignedTaskCnt--;
-						totalTasks--;
-						System.out.println("*** Removed Weather User assignment for user " + UserAssignmenIterator.next().userName + " [ Perc " +UserAssignmenIterator.next().assignedPerc + " Tasks " + UserAssignmenIterator.next().assignedTaskCnt + "Total Tasks " + totalTasks + "] ");
-					}
-				}
-				}
-			}
-			**/
-	 
+			}	 
 		}
 		
 		Map<String, Object> results = new HashMap<String, Object>();
