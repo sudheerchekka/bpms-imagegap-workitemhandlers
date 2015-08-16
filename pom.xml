@@ -38,6 +38,13 @@
 			<artifactId>drools-core</artifactId>
 			<version>6.2.0.Final-redhat-4</version>
 		</dependency>
+		<dependency>
+			<scope>provided</scope>
+			<groupId>org.jbpm</groupId>
+			<artifactId>jbpm-flow</artifactId>
+			<version>6.2.0.Final-redhat-4</version>
+		</dependency>
+
 
 	</dependencies>
 	
