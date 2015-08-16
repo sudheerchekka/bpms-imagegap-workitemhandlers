@@ -9,7 +9,7 @@ import com.redhat.poc.approvals.services.*;
 
 public class WeatherAssignmentWorkItemHandler implements org.kie.api.runtime.process.WorkItemHandler {
 
-	private static WeatherAssignmentService assignmentService = new WeatherAssignmentService();
+	//private static WeatherAssignmentService assignmentService = new WeatherAssignmentService();
 	
 	
 	public void executeWorkItem(WorkItem workItem, WorkItemManager manager) {
@@ -19,7 +19,9 @@ public class WeatherAssignmentWorkItemHandler implements org.kie.api.runtime.pro
 
 		System.out.println("Weather task assignment [ " + taskAssignment + " ] for work item: " + workItem.getId());
 
-		Map<String, Object> results = assignmentService.assignWorkItem(taskAssignment, groupAssignment);
+		
+        WeatherAssignmentService service = WeatherAssignmentService.getService();
+        Map<String, Object> results = service.assignWorkItem(taskAssignment, groupAssignment);
 		
 		System.out.println("assigned actor id " + results.get("AssignedActorId"));
 		System.out.println("assigned Group id " + results.get("AssignedGroupId"));

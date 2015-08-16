@@ -29,7 +29,7 @@ import com.redhat.poc.approvals.services.*;
 
 public class WeatherReAssignmentWorkItemHandler implements WorkItemHandler {
 
-	private static WeatherAssignmentService assignmentService = new WeatherAssignmentService();
+	//private static WeatherAssignmentService assignmentService = new WeatherAssignmentService();
 	
 	private KieSession ksession;
 	
@@ -59,8 +59,8 @@ public class WeatherReAssignmentWorkItemHandler implements WorkItemHandler {
 		
 		RuntimeManager runtimeManager = RuntimeManagerRegistry.get().getManager(deploymentId);
 		RuntimeEngine engine = runtimeManager.getRuntimeEngine(ProcessInstanceIdContext.get(processInstanceId));
-		WorkflowProcessInstance instnace = (WorkflowProcessInstance)ksession.getProcessInstance(processInstanceId);
-		Collection<NodeInstance> nodeInstances = instnace.getNodeInstances();
+		WorkflowProcessInstance instance  = (WorkflowProcessInstance)ksession.getProcessInstance(processInstanceId);
+		Collection<NodeInstance> nodeInstances = instance.getNodeInstances();
 		int status=0;
 		for (NodeInstance node : nodeInstances){
 			WorkItemNodeInstance workItemNodeInstance = (WorkItemNodeInstance) node;
@@ -136,8 +136,9 @@ public class WeatherReAssignmentWorkItemHandler implements WorkItemHandler {
 		
 		//get target user id from your business logic
 		String targetUserid = "";
+		WeatherAssignmentService service = WeatherAssignmentService.getService();
 		
-		Map<String, Object> results = assignmentService.assignWorkItem(userid, "analyst");
+		Map<String, Object> results = service.assignWorkItem(userid, "analyst");
 
 		targetUserid = (String) results.get("AssignedActorId");
 		
@@ -151,7 +152,7 @@ public class WeatherReAssignmentWorkItemHandler implements WorkItemHandler {
 			
 			taskService.delegate(taskId, userid, targetUserid);
 			//taskService.forward(taskId, userid, targetUserid);
-			
+			//taskService.nominate(arg0, arg1, arg2);
 		} else {
 			System.out.println("task releasd to " + userid);
 			taskService.release(taskId, userid);
