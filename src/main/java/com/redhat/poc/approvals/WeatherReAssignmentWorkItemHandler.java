@@ -92,8 +92,9 @@ public class WeatherReAssignmentWorkItemHandler implements WorkItemHandler {
 		
 		PeopleAssignments as = task.getPeopleAssignments();
 		List<OrganizationalEntity> ord = as.getPotentialOwners();
+		String userid = null;
 		for (OrganizationalEntity org : ord){
-			org.getId();
+			userid = org.getId();
 			System.out.println("org potential owner" + org.getId());
 		}
 		if(task == null){
@@ -102,7 +103,8 @@ public class WeatherReAssignmentWorkItemHandler implements WorkItemHandler {
 			taskId = task.getId();
 			System.out.println("tsk is n skId" + taskId); 
 		}
-		String userid = task.getTaskData().getActualOwner().getId();
+		//String userid = task.getTaskData().getActualOwner().getId();
+		
 		userid = ord.get(0).getId();
 		TaskData tdata = task.getTaskData();
 		if(tdata == null){
@@ -135,6 +137,7 @@ public class WeatherReAssignmentWorkItemHandler implements WorkItemHandler {
 		Map<String, Object> results = assignmentService.assignWorkItem(userid, "analyst");
 
 		targetUserid = (String) results.get("AssignedActorId");
+		
 		System.out.println("actual targetUserid " + targetUserid);
 		if ( status == 0){
 			//userid = "Administrator";

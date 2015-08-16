@@ -20,9 +20,10 @@ public class WeatherAssignmentWorkItemHandler implements org.kie.api.runtime.pro
 		System.out.println("Weather task assignment [ " + taskAssignment + " ] for work item: " + workItem.getId());
 
 		Map<String, Object> results = assignmentService.assignWorkItem(taskAssignment, groupAssignment);
-		System.out.println("Weather task assignment [ " + results + " ]");
-
 		
+		System.out.println("assigned actor id " + results.get("AssignedActorId"));
+		System.out.println("assigned Group id " + results.get("AssignedGroupId"));
+	
 		manager.completeWorkItem(workItem.getId(), results);		
 		} catch (Exception e) {
 			System.out.println("Weather eassignment aborted for WorkItemID " + workItem.getId());

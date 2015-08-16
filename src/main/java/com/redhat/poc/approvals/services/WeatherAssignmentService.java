@@ -119,8 +119,16 @@ public class WeatherAssignmentService {
 			
 			results.put("AssignedActorId", taskUser);
 			results.put("AssignedGroupId", taskRole);
-		} else
+			System.out.println("assigned actor id  in if" + results.get("AssignedActorId"));
+			System.out.println("assigned Group id in if" + results.get("AssignedGroupId"));
+			
+		} else {
 			results.put("AssignedGroupId", supervisorRole);
+			System.out.println("assigned actor id  in elsev" + results.get("AssignedActorId"));
+			System.out.println("assigned Group id in else " + results.get("AssignedGroupId"));
+			
+		}
+		
 		
 		return results;
 		
