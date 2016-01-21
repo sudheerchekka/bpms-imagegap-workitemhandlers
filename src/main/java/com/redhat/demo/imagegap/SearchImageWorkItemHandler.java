@@ -4,7 +4,10 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.kie.api.runtime.process.WorkItem;
 import org.kie.api.runtime.process.WorkItemHandler;
@@ -12,17 +15,59 @@ import org.kie.api.runtime.process.WorkItemManager;
 
 public class SearchImageWorkItemHandler implements WorkItemHandler {
 
-	public void executeWorkItem(WorkItem workItem, WorkItemManager workItemManager) {
+	public void executeWorkItem(WorkItem workItem,
+			WorkItemManager workItemManager) {
 		try {
 
 			String name = (String) workItem.getParameter("name");
+			Map<String, Object> results = new HashMap<String, Object>();
+			
 			System.out.println("***** Searching Image in Database...");
 
 			try {
-				System.out.println("*********From direct connection**************");
-				Connection conn = this.getDirectConnection();
-				conn.setAutoCommit(true);
-				//TODO: JDBC Query
+				System.out
+						.println("*********From direct connection**************");
+				// TODO: JDBC Query
+				Connection dbConnection = null;
+				PreparedStatement preparedStatement = null;
+
+				String selectSQL = "SELECT posterUrl FROM bpms62.MOVIE_EPISODE_POSTER WHERE posterTags = ?";
+
+				try {
+					dbConnection = getDBConnection();
+					preparedStatement = dbConnection
+							.prepareStatement(selectSQL);
+					preparedStatement.setString(1, name);
+
+					// execute select SQL statement
+					ResultSet rs = preparedStatement.executeQuery();
+
+					while (rs.next()) {
+
+						String posterUrl = rs.getString("posterUrl");
+						System.out.println("posterUrl for" + name + " : "
+								+ posterUrl);
+
+						if (posterUrl != null) {
+							results.put("posterUrl", posterUrl);
+						}
+					}
+
+				} catch (SQLException e) {
+
+					System.out.println(e.getMessage());
+
+				} finally {
+
+					if (preparedStatement != null) {
+						preparedStatement.close();
+					}
+
+					if (dbConnection != null) {
+						dbConnection.close();
+					}
+
+				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -33,21 +78,25 @@ public class SearchImageWorkItemHandler implements WorkItemHandler {
 
 			// TODO: JDBC Query
 
-			workItemManager.completeWorkItem(workItem.getId(), null);
+			workItemManager.completeWorkItem(workItem.getId(), results);
 
 		} catch (Exception e) {
-			System.out.println("***** Search Image in Database aborted for WorkItemID " + workItem.getId());
+			System.out
+					.println("***** Search Image in Database aborted for WorkItemID "
+							+ workItem.getId());
 			workItemManager.abortWorkItem(workItem.getId());
 			e.printStackTrace();
 		}
 	}
 
 	public void abortWorkItem(WorkItem workItem, WorkItemManager manager) {
-		System.out.println("***** Search Image in Database aborted for WorkItemID " + workItem.getId());
+		System.out
+				.println("***** Search Image in Database aborted for WorkItemID "
+						+ workItem.getId());
 
 	}
 
-	private Connection getDirectConnection() {
+	private Connection getDBConnection() {
 		Connection conn = null;
 		try {
 			String url = "jdbc:mysql://localhost:3306/bpms62";

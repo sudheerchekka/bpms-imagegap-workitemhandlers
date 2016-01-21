@@ -1,2 +1,2 @@
-# bpms_customWorkItemHandler
-Example of a simple JBoss BPMS custom work item handler to make database calls.
+# ImageGap_CustomWorkItemHandler
+Example of simple JBoss BPMS custom work item handlers to make database calls.
