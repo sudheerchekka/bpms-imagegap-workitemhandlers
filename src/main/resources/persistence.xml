@@ -4,9 +4,10 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
                       http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
 	version="2.0">
-	<persistence-unit name="ImageGap-CustomWorkItemHandlers"
+	<persistence-unit name="sample-jpa-console-app"
 		transaction-type="RESOURCE_LOCAL">
-		<class>model.MovieEpisodePoster</class>
+		<class>com.redhat.demo.imagegap.model.MovieEpisodeRequest</class>
+		<class>com.redhat.demo.imagegap.modelMovieEpisodePoster</class>
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
 			<property name="hibernate.show_sql" value="true" />
