@@ -16,12 +16,11 @@ public class LinkImageWorkItemHandler implements WorkItemHandler {
 
 	public void executeWorkItem(WorkItem workItem, WorkItemManager workItemManager) {
 		try {
-			System.out.println("***** Linking image in Database");
+			System.out.println("***** Linking image in Database *****");
 
 			// TODO: JDBC Inserts - MOVIE_EPISODE_POSTER & MOVIE_EPISODE_REQUEST
 			try {
-				System.out.println("*********From direct connection**************");
-				Connection conn = this.getDirectConnection();
+				Connection conn = this.getDBConnection();
 				conn.setAutoCommit(true);
 				PreparedStatement stmt = conn
 						.prepareStatement("INSERT INTO MOVIE_EPISODE_POSTER(poster_id,poster_url,poster_description,poster_tags) VALUES(?,?,?,?)");
@@ -53,7 +52,7 @@ public class LinkImageWorkItemHandler implements WorkItemHandler {
 
 	}
 
-	private Connection getDirectConnection() {
+	private Connection getDBConnection() {
 		Connection conn = null;
 		try {
 			String url = "jdbc:mysql://localhost:3306/bpms62";

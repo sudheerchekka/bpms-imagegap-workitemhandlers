@@ -22,11 +22,9 @@ public class SearchImageWorkItemHandler implements WorkItemHandler {
 			String name = (String) workItem.getParameter("name");
 			Map<String, Object> results = new HashMap<String, Object>();
 			
-			System.out.println("***** Searching Image in Database...");
+			System.out.println("***** Searching Image in Database *****");
 
 			try {
-				System.out
-						.println("*********From direct connection**************");
 				// TODO: JDBC Query
 				Connection dbConnection = null;
 				PreparedStatement preparedStatement = null;
@@ -76,8 +74,7 @@ public class SearchImageWorkItemHandler implements WorkItemHandler {
 				// TODO: handle exception
 			}
 
-			// TODO: JDBC Query
-
+			// Complete Work Item with results
 			workItemManager.completeWorkItem(workItem.getId(), results);
 
 		} catch (Exception e) {
