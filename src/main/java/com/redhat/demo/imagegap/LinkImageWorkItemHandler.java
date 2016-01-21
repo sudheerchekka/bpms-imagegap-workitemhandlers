@@ -22,13 +22,22 @@ public class LinkImageWorkItemHandler implements WorkItemHandler {
 			try {
 				Connection conn = this.getDBConnection();
 				conn.setAutoCommit(true);
-				PreparedStatement stmt = conn
-						.prepareStatement("INSERT INTO MOVIE_EPISODE_POSTER(poster_id,poster_url,poster_description,poster_tags) VALUES(?,?,?,?)");
-				stmt.setString(0, workItem.getParameter("PosterId").toString());
-				stmt.setString(1, workItem.getParameter("PosterUrl").toString());
-				stmt.setString(2, workItem.getParameter("PosterDescription").toString());
-				stmt.setString(3, workItem.getParameter("PosterTags").toString());
-				stmt.execute();
+				
+				PreparedStatement stmt1 = conn
+						.prepareStatement("INSERT INTO MOVIE_EPISODE_REQUEST(posterId, posterUrl, posterDescription, posterTags) VALUES(?,?,?,?)");
+				stmt1.setString(0, workItem.getParameter("posterId").toString());
+				stmt1.setString(1, workItem.getParameter("posterUrl").toString());
+				stmt1.setString(2, workItem.getParameter("posterDescription").toString());
+				stmt1.setString(3, workItem.getParameter("posterTags").toString());
+				stmt1.execute();
+				
+				PreparedStatement stmt2 = conn
+						.prepareStatement("INSERT INTO MOVIE_EPISODE_POSTER(id, name, airDate , releaseYear) VALUES(?,?,?,?)");
+				stmt2.setString(0, workItem.getParameter("Id").toString());
+				stmt2.setString(1, workItem.getParameter("name").toString());
+				stmt2.setString(2, workItem.getParameter("airDate").toString());
+				stmt2.setString(3, workItem.getParameter("releaseYear").toString());
+				stmt2.execute();
 
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
