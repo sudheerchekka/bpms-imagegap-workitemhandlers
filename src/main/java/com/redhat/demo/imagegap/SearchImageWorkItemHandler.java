@@ -15,7 +15,7 @@ public class SearchImageWorkItemHandler implements WorkItemHandler {
 	public void executeWorkItem(WorkItem workItem, WorkItemManager workItemManager) {
 		try {
 
-			String keyword = (String) workItem.getParameter("keyword");
+			String name = (String) workItem.getParameter("name");
 			System.out.println("***** Searching Image in Database...");
 
 			try {
