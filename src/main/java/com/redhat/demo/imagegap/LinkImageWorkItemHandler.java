@@ -25,7 +25,8 @@ public class LinkImageWorkItemHandler implements WorkItemHandler {
 			String posterDescription = (String) workItem
 					.getParameter("PosterDescription");
 			String posterTags = (String) workItem.getParameter("PosterTags");
-
+			
+			
 			// Request
 /*
 			MovieEpisodeRequest movieEpisodeRequest = (MovieEpisodeRequest) workItem
@@ -36,9 +37,19 @@ public class LinkImageWorkItemHandler implements WorkItemHandler {
 			String releaseYear = movieEpisodeRequest.getReleaseYear();
 */
 			String name = (String) workItem.getParameter("MovieEpisodeName");
-			java.util.Date airDate = (java.util.Date) workItem.getParameter("MovieEpisodeAirDate");
-			java.sql.Date airDateSql = new java.sql.Date(airDate.getTime());
-			String releaseYear = (String) workItem.getParameter("MovieEpisodeReleaseYear");
+			/*java.util.Date airDate = (java.util.Date) workItem.getParameter("MovieEpisodeAirDate");
+			java.sql.Date airDateSql = new java.sql.Date(airDate.getTime());*/
+			String airDateSql = (String) workItem.getParameter("AirDate");
+			String releaseYear = (String) workItem.getParameter("ReleaseYear");
+			String country = (String) workItem.getParameter("Country");
+			
+			System.out.println("posterId: " + posterId);
+			System.out.println("posterUrl: " + posterUrl);
+			System.out.println("posterDescription: " + posterDescription);
+			System.out.println("posterTags: " + posterTags);
+			System.out.println("name: " + name);
+			System.out.println("airDateSql: " + airDateSql);
+			System.out.println("releaseYear: " + releaseYear);
 			
 			Map<String, Object> results = new HashMap<String, Object>();
 
@@ -46,38 +57,55 @@ public class LinkImageWorkItemHandler implements WorkItemHandler {
 				Connection conn = this.getDBConnection();
 				conn.setAutoCommit(true);
 
-				String insertPosterSQL = "INSERT INTO bpms62.MOVIE_EPISODE_POSTER(posterUrl, posterDescription, posterTags) VALUES(?,?,?,?)";
+				String insertPosterSQL = "INSERT INTO bpms62.MOVIE_EPISODE_POSTER(posterUrl, posterDescription, posterTags) VALUES(?,?,?)";
 				String selectPosterSQL = "SELECT posterId, posterUrl FROM bpms62.MOVIE_EPISODE_POSTER WHERE posterUrl = ?";
-				String insertRequestSQL = "INSERT INTO bpms62.MOVIE_EPISODE_REQUEST(name, airDate , releaseYear, posterId) VALUES(?,?,?,?,?)";
+				String insertRequestSQL = "INSERT INTO bpms62.MOVIE_EPISODE_REQUEST(name, airDate , releaseYear, country, posterId) VALUES(?,?,?,?,?)";
 
 				if (posterId == null && posterUrl != null) {
+					//insert into MOVIE_EPISODE_POSTER table
 					PreparedStatement ps1 = conn
 							.prepareStatement(insertPosterSQL);
-					ps1.setString(0, posterUrl);
-					ps1.setString(1, posterDescription);
-					ps1.setString(2, posterTags);
+					ps1.setString(1, posterUrl);
+					ps1.setString(2, posterDescription);
+					ps1.setString(3, posterTags);
 					ps1.execute();
-				}
-				
-				PreparedStatement ps2 = conn
-						.prepareStatement(selectPosterSQL);
-				ps2.setString(1, posterUrl);
-				ResultSet rs = ps2.executeQuery();
+					System.out.println("inserted into MOVIE_EPISODE_POSTER ");
 
-				PreparedStatement ps3 = conn
-						.prepareStatement(insertRequestSQL);
-				
-				while (rs.next()) {
-					int posterIdToLink = rs.getInt("posterId");
-					System.out.println("***** Poster Id to link to Image: " + posterIdToLink);
+					//get posterId from MOVIE_EPISODE_POSTER table
+					PreparedStatement ps2 = conn
+							.prepareStatement(selectPosterSQL);
+					ps2.setString(1, posterUrl);
+					ResultSet rs = ps2.executeQuery();
 					
-					ps3.setString(0, name);
-					ps3.setDate(1, airDateSql);
-					ps3.setString(2, releaseYear);
-					ps3.setInt(3, posterId);
-					ps3.execute();
-
+					
+					while (rs.next()){
+						posterId = rs.getInt("posterId");
+						System.out.println("result for posterId query: " + posterId);
+					}
+					
 				}
+				
+				if (posterId != null){
+					PreparedStatement ps3 = conn
+							.prepareStatement(insertRequestSQL);
+					
+						//int posterIdToLink = rs.getInt("posterId");
+						System.out.println("***** Poster Id to link to Image !!!!: " + posterId);
+						
+						ps3.setString(1, name);
+						//ps3.setDate(1, airDateSql);
+						ps3.setString(2, airDateSql);
+						ps3.setString(3, releaseYear);
+						ps3.setString(4, country);
+						ps3.setInt(5, posterId);
+						ps3.execute();
+						
+						System.out.println("inserted into MOVIE_EPISODE_REQUEST ");
+				}
+				
+
+				
+				conn.close();
 
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block

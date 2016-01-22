@@ -18,10 +18,10 @@ public class SearchImageWorkItemHandler implements WorkItemHandler {
 			WorkItemManager workItemManager) {
 		try {
 
-			String name = (String) workItem.getParameter("name");
+			String name = (String) workItem.getParameter("Name");
 			Map<String, Object> results = new HashMap<String, Object>();
 			
-			System.out.println("***** Searching Image in Database *****");
+			System.out.println("***** Searching Image in Database *****: name : " + name);
 
 			try {
 				Connection dbConnection = null;
@@ -42,15 +42,15 @@ public class SearchImageWorkItemHandler implements WorkItemHandler {
 
 						int posterId = rs.getInt("posterId");
 						String posterUrl = rs.getString("posterUrl");
-						String posterDescription = rs.getString("posterDescription");
-						String posterTags = rs.getString("posterTags");
+						//String posterDescription = rs.getString("posterDescription");
+						//String posterTags = rs.getString("posterTags");
 						System.out.println("***** Poster Name=" + name + " posterId=" + posterId + " posterUrl=" + posterUrl);
 
 						if (posterUrl != null) {
-							results.put("posterId", posterId);
-							results.put("posterUrl", posterUrl);
-							results.put("posterDescription", posterDescription);
-							results.put("posterTags", posterTags);
+							results.put("PosterId", posterId);
+							results.put("PosterUrl", posterUrl);
+							//results.put("posterDescription", posterDescription);
+							//results.put("posterTags", posterTags);
 						}
 					}
 
