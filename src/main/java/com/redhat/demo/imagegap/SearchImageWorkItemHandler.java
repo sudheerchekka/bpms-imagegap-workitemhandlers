@@ -1,7 +1,6 @@
 package com.redhat.demo.imagegap;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -25,11 +24,10 @@ public class SearchImageWorkItemHandler implements WorkItemHandler {
 			System.out.println("***** Searching Image in Database *****");
 
 			try {
-				// TODO: JDBC Query
 				Connection dbConnection = null;
 				PreparedStatement preparedStatement = null;
 
-				String selectSQL = "SELECT posterUrl FROM bpms62.MOVIE_EPISODE_POSTER WHERE posterTags = ?";
+				String selectSQL = "SELECT posterId, posterUrl FROM bpms62.MOVIE_EPISODE_POSTER WHERE posterTags = ?";
 
 				try {
 					dbConnection = getDBConnection();
@@ -42,12 +40,17 @@ public class SearchImageWorkItemHandler implements WorkItemHandler {
 
 					while (rs.next()) {
 
+						int posterId = rs.getInt("posterId");
 						String posterUrl = rs.getString("posterUrl");
-						System.out.println("posterUrl for" + name + " : "
-								+ posterUrl);
+						String posterDescription = rs.getString("posterDescription");
+						String posterTags = rs.getString("posterTags");
+						System.out.println("***** Poster Name=" + name + " posterId=" + posterId + " posterUrl=" + posterUrl);
 
 						if (posterUrl != null) {
+							results.put("posterId", posterId);
 							results.put("posterUrl", posterUrl);
+							results.put("posterDescription", posterDescription);
+							results.put("posterTags", posterTags);
 						}
 					}
 
