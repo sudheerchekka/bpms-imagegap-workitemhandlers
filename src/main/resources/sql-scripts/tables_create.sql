@@ -13,8 +13,9 @@ CREATE TABLE `MOVIE_EPISODE_REQUEST` (
   `airDate` varchar(45) DEFAULT NULL,
   `releaseYear` varchar(45) DEFAULT NULL,
   `posterId` int(11) DEFAULT NULL,
+  `country` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `idx_MOVIE_EPISODE_REQUEST_id` (`id`),
-  KEY `idx_MOVIE_EPISODE_REQUEST_posterUrlId` (`posterId`),
-  CONSTRAINT `posterId` FOREIGN KEY (`id`) REFERENCES `movie_episode_poster` (`posterId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  KEY `idx_MOVIE_EPISODE_REQUEST_posterUrlId` (`posterId`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
