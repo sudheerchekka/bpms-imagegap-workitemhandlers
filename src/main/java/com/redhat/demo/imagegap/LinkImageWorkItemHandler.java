@@ -12,8 +12,6 @@ import org.kie.api.runtime.process.WorkItem;
 import org.kie.api.runtime.process.WorkItemHandler;
 import org.kie.api.runtime.process.WorkItemManager;
 
-import com.redhat.demos.imagegapanalysis.MovieEpisodeRequest;
-
 public class LinkImageWorkItemHandler implements WorkItemHandler {
 
 	public void executeWorkItem(WorkItem workItem,
@@ -22,20 +20,26 @@ public class LinkImageWorkItemHandler implements WorkItemHandler {
 			System.out.println("***** Linking image in Database *****");
 
 			// Poster
-			Integer posterId = (Integer) workItem.getParameter("posterId");
-			String posterUrl = (String) workItem.getParameter("posterUrl");
+			Integer posterId = (Integer) workItem.getParameter("PosterId");
+			String posterUrl = (String) workItem.getParameter("PosterUrl");
 			String posterDescription = (String) workItem
-					.getParameter("posterDescription");
-			String posterTags = (String) workItem.getParameter("posterTags");
+					.getParameter("PosterDescription");
+			String posterTags = (String) workItem.getParameter("PosterTags");
 
 			// Request
+/*
 			MovieEpisodeRequest movieEpisodeRequest = (MovieEpisodeRequest) workItem
 					.getParameter("MovieEpisodeRequest");
 			String name = movieEpisodeRequest.getName();
 			java.util.Date airDate = movieEpisodeRequest.getAirDate();
 			java.sql.Date airDateSql = new java.sql.Date(airDate.getTime());
 			String releaseYear = movieEpisodeRequest.getReleaseYear();
-
+*/
+			String name = (String) workItem.getParameter("MovieEpisodeName");
+			java.util.Date airDate = (java.util.Date) workItem.getParameter("MovieEpisodeAirDate");
+			java.sql.Date airDateSql = new java.sql.Date(airDate.getTime());
+			String releaseYear = (String) workItem.getParameter("MovieEpisodeReleaseYear");
+			
 			Map<String, Object> results = new HashMap<String, Object>();
 
 			try {
