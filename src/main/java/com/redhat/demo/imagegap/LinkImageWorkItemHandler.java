@@ -25,20 +25,7 @@ public class LinkImageWorkItemHandler implements WorkItemHandler {
 			String posterDescription = (String) workItem
 					.getParameter("PosterDescription");
 			String posterTags = (String) workItem.getParameter("PosterTags");
-			
-			
-			// Request
-/*
-			MovieEpisodeRequest movieEpisodeRequest = (MovieEpisodeRequest) workItem
-					.getParameter("MovieEpisodeRequest");
-			String name = movieEpisodeRequest.getName();
-			java.util.Date airDate = movieEpisodeRequest.getAirDate();
-			java.sql.Date airDateSql = new java.sql.Date(airDate.getTime());
-			String releaseYear = movieEpisodeRequest.getReleaseYear();
-*/
 			String name = (String) workItem.getParameter("MovieEpisodeName");
-			/*java.util.Date airDate = (java.util.Date) workItem.getParameter("MovieEpisodeAirDate");
-			java.sql.Date airDateSql = new java.sql.Date(airDate.getTime());*/
 			String airDateSql = (String) workItem.getParameter("AirDate");
 			String releaseYear = (String) workItem.getParameter("ReleaseYear");
 			String country = (String) workItem.getParameter("Country");
@@ -58,7 +45,8 @@ public class LinkImageWorkItemHandler implements WorkItemHandler {
 				conn.setAutoCommit(true);
 
 				String insertPosterSQL = "INSERT INTO bpms62.MOVIE_EPISODE_POSTER(posterUrl, posterDescription, posterTags) VALUES(?,?,?)";
-				String selectPosterSQL = "SELECT posterId, posterUrl FROM bpms62.MOVIE_EPISODE_POSTER WHERE posterUrl = ?";
+				//String selectPosterSQL = "SELECT posterId, posterUrl FROM bpms62.MOVIE_EPISODE_POSTER WHERE posterUrl = ?";
+				String selectPosterSQL = "select last_insert_id() as last_id from bpms62.MOVIE_EPISODE_POSTER";
 				String insertRequestSQL = "INSERT INTO bpms62.MOVIE_EPISODE_REQUEST(name, airDate , releaseYear, country, posterId) VALUES(?,?,?,?,?)";
 
 				if (posterId == null && posterUrl != null) {
@@ -74,12 +62,12 @@ public class LinkImageWorkItemHandler implements WorkItemHandler {
 					//get posterId from MOVIE_EPISODE_POSTER table
 					PreparedStatement ps2 = conn
 							.prepareStatement(selectPosterSQL);
-					ps2.setString(1, posterUrl);
+					//ps2.setString(1, posterUrl);
 					ResultSet rs = ps2.executeQuery();
 					
 					
-					while (rs.next()){
-						posterId = rs.getInt("posterId");
+					if (rs.next()){
+						posterId = rs.getInt(1);
 						System.out.println("result for posterId query: " + posterId);
 					}
 					

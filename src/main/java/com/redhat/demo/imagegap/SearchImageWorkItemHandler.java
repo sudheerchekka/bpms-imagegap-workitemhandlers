@@ -27,14 +27,18 @@ public class SearchImageWorkItemHandler implements WorkItemHandler {
 				Connection dbConnection = null;
 				PreparedStatement preparedStatement = null;
 
-				String selectSQL = "SELECT posterId, posterUrl FROM bpms62.MOVIE_EPISODE_POSTER WHERE posterTags = ?";
+				//String selectSQL = "SELECT posterId, posterUrl FROM bpms62.MOVIE_EPISODE_POSTER WHERE LOWER(posterTags) LIKE ?";
+				String selectSQL = "SELECT posterId, posterUrl FROM bpms62.MOVIE_EPISODE_POSTER WHERE LOWER(posterTags) = ?";
 
 				try {
 					dbConnection = getDBConnection();
 					preparedStatement = dbConnection
 							.prepareStatement(selectSQL);
-					preparedStatement.setString(1, name);
+					//preparedStatement.setString(1, "%" + name.toLowerCase() + "%");
+					preparedStatement.setString(1, name.toLowerCase());
 
+					System.out.println("selectSQL preparedStatement: " + preparedStatement);
+					
 					// execute select SQL statement
 					ResultSet rs = preparedStatement.executeQuery();
 
@@ -42,15 +46,11 @@ public class SearchImageWorkItemHandler implements WorkItemHandler {
 
 						int posterId = rs.getInt("posterId");
 						String posterUrl = rs.getString("posterUrl");
-						//String posterDescription = rs.getString("posterDescription");
-						//String posterTags = rs.getString("posterTags");
 						System.out.println("***** Poster Name=" + name + " posterId=" + posterId + " posterUrl=" + posterUrl);
 
 						if (posterUrl != null) {
 							results.put("PosterId", posterId);
 							results.put("PosterUrl", posterUrl);
-							//results.put("posterDescription", posterDescription);
-							//results.put("posterTags", posterTags);
 						}
 					}
 
