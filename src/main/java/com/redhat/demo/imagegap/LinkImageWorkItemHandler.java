@@ -27,8 +27,9 @@ public class LinkImageWorkItemHandler implements WorkItemHandler {
 			String posterTags = (String) workItem.getParameter("PosterTags");
 			String name = (String) workItem.getParameter("MovieEpisodeName");
 			String airDateSql = (String) workItem.getParameter("AirDate");
-			String releaseYear = (String) workItem.getParameter("ReleaseYear");
+			Integer releaseYear = (Integer) workItem.getParameter("ReleaseYear");
 			String country = (String) workItem.getParameter("Country");
+			String movieType = (String) workItem.getParameter("MovieType");
 			
 			System.out.println("posterId: " + posterId);
 			System.out.println("posterUrl: " + posterUrl);
@@ -37,6 +38,7 @@ public class LinkImageWorkItemHandler implements WorkItemHandler {
 			System.out.println("name: " + name);
 			System.out.println("airDateSql: " + airDateSql);
 			System.out.println("releaseYear: " + releaseYear);
+			System.out.println("movieType: " + movieType);
 			
 			Map<String, Object> results = new HashMap<String, Object>();
 
@@ -47,7 +49,7 @@ public class LinkImageWorkItemHandler implements WorkItemHandler {
 				String insertPosterSQL = "INSERT INTO bpms62.MOVIE_EPISODE_POSTER(posterUrl, posterDescription, posterTags) VALUES(?,?,?)";
 				//String selectPosterSQL = "SELECT posterId, posterUrl FROM bpms62.MOVIE_EPISODE_POSTER WHERE posterUrl = ?";
 				String selectPosterSQL = "select last_insert_id() as last_id from bpms62.MOVIE_EPISODE_POSTER";
-				String insertRequestSQL = "INSERT INTO bpms62.MOVIE_EPISODE_REQUEST(name, airDate , releaseYear, country, posterId) VALUES(?,?,?,?,?)";
+				String insertRequestSQL = "INSERT INTO bpms62.MOVIE_EPISODE_REQUEST(name, airDate , releaseYear, country, posterId, type) VALUES(?,?,?,?,?,?)";
 
 				if (posterId == null && posterUrl != null) {
 					//insert into MOVIE_EPISODE_POSTER table
@@ -83,9 +85,13 @@ public class LinkImageWorkItemHandler implements WorkItemHandler {
 						ps3.setString(1, name);
 						//ps3.setDate(1, airDateSql);
 						ps3.setString(2, airDateSql);
-						ps3.setString(3, releaseYear);
+						if (releaseYear != null)
+							ps3.setInt(3, releaseYear.intValue());
+						else
+							ps3.setInt(3, 0);
 						ps3.setString(4, country);
 						ps3.setInt(5, posterId);
+						ps3.setString(6, movieType);
 						ps3.execute();
 						
 						System.out.println("inserted into MOVIE_EPISODE_REQUEST ");

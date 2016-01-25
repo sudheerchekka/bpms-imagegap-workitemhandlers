@@ -14,8 +14,10 @@ CREATE TABLE `MOVIE_EPISODE_REQUEST` (
   `releaseYear` varchar(45) DEFAULT NULL,
   `posterId` int(11) DEFAULT NULL,
   `country` varchar(45) DEFAULT NULL,
+  `type` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `idx_MOVIE_EPISODE_REQUEST_id` (`id`),
   KEY `idx_MOVIE_EPISODE_REQUEST_posterUrlId` (`posterId`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8;
+select * from MOVIE_EPISODE_REQUEST
 
