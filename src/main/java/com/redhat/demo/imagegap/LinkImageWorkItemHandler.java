@@ -55,7 +55,7 @@ public class LinkImageWorkItemHandler implements WorkItemHandler {
 							.prepareStatement(insertPosterSQL);
 					ps1.setString(1, posterUrl);
 					ps1.setString(2, posterDescription);
-					ps1.setString(3, posterTags);
+					ps1.setString(3, name);
 					ps1.execute();
 					System.out.println("inserted into MOVIE_EPISODE_POSTER ");
 
